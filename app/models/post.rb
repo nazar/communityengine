@@ -33,8 +33,8 @@ class Post < ActiveRecord::Base
   named_scope :by_featured_writers, :conditions => ["users.featured_writer = ?", true], :include => :user
   named_scope :recent, :order => 'posts.published_at DESC'
   named_scope :popular, :order => 'posts.view_count DESC'
-  named_scope :since, lambda { |days|
-    {:conditions => "posts.published_at > '#{days.ago.to_s :db}'" }
+  named_scope :since, lambda { |pdays|
+    {:conditions => "posts.published_at > '#{pdays.days.ago.to_s :db}'" }
   }
   named_scope :tagged_with, lambda {|tag_name|
     {:conditions => ["tags.name = ?", tag_name], :include => :tags}
