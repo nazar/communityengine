@@ -181,7 +181,7 @@ class User < ActiveRecord::Base
   
   def self.recent_activity(page = {}, options = {})
     page.reverse_merge! :size => 10, :current => 1
-    Activity.recent.scoped( 
+    Activity.recent.find(:all, 
       :select => 'activities.*', 
       :conditions => "users.activated_at IS NOT NULL", 
       :joins => "LEFT JOIN users ON users.id = activities.user_id", 
