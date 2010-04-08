@@ -86,7 +86,7 @@ module PaginatingFind
           # Set appropriate :offset and :limit options for this page
           options[:offset] = (page - 1) * page_size 
           options[:limit] = (page_size) < total_size ? page_size : total_size
-          
+
           if cached_scoped_methods
             # :with_scope options were specified, so 
             # the with_scope method must be invoked
@@ -131,6 +131,9 @@ module PaginatingFind
       
       # Eliminate count options like :order, :limit, :offset.
       rtn.delete_if { |k, v| !VALID_COUNT_OPTIONS.include?(k.to_sym) }
+      #must check for :include option here as polymorphic associations don't like to be counted and eager loaded
+      rtn.delete_if { |k, v| k == :include}
+
       rtn
     end
     
