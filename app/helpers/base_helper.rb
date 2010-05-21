@@ -259,31 +259,21 @@ module BaseHelper
   end
   
   def paginating_links(paginator, options = {}, html_options = {})
-    if paginator.page_count > 1
-  		name = options[:name] || PaginatingFind::Helpers::DEFAULT_OPTIONS[:name]
- 
-    	our_params = (options[:params] || params).clone
-      
-      our_params.delete("authenticity_token")
-      our_params.delete("commit")
-
-    	links = paginating_links_each(paginator, options) do |n|
-    	  our_params[name] = n
-    	  link_to(n, our_params, html_options.merge(:class => (paginator.page.eql?(n) ? 'active' : '')))
-    	end
-    end
-    
+    #will_paginate assigned a .pagination class to its links div...
+    #set this to nil as paginating_links is already inside a .pagination class
+    html_options[:class] = nil unless html_options[:class]
+    links = will_paginate paginator, html_options 
     if options[:show_info].eql?(false)
       (links || '')
     else
-      content_tag(:div, pagination_info_for(paginator), :class => 'pagination_info') + (links || '')
+      content_tag(:div, pagination_info_for(paginator), :class => 'pagination_info') << (links || '')
     end
   end  
   
   def pagination_info_for(paginator, options = {})
     options = {:prefix => :showing.l, :connector => '-', :suffix => ""}.merge(options)
     window = paginator.first_item.to_s + options[:connector] + paginator.last_item.to_s
-    options[:prefix] + " <strong>#{window}</strong> " + :of.l + " #{paginator.size} " + options[:suffix]
+    options[:prefix] + " <strong>#{window}</strong> " + :of.l + " #{paginator.total_entries} " + options[:suffix]
   end
   
   

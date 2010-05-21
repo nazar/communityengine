@@ -87,7 +87,7 @@ class BaseController < ApplicationController
           return @user
         end
       else
-        flash[:error] = :please_log_in.l
+        flash[:error] = :unactivated_users.l
         access_denied
       end
     end

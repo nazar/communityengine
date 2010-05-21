@@ -755,21 +755,31 @@ div.pagination {
 	div.pagination div.pagination_info {
 		float:right;
 		}
-div.pagination a {
-	margin-right:0.3em;
-	padding:0.4em;	
-	}
-	div.pagination a:hover {
-		background:#828282;
-		color:#ffffff;
-		margin-right:0.3em;
-		padding:0.4em;	
-		}
-div.pagination a.active {
-		background:#828282;
-		border:none;
-		color:#ffffff;		
-	}
+.pagination a {
+    padding: 2px 5px 2px 5px;
+    margin: 2px;
+    border: 1px solid #aaaadd;
+    text-decoration: none;
+    color: #000099;
+}
+.pagination a:hover, .pagination a:active {
+    border: 1px solid #000099;
+    color: #000;
+}
+.pagination span.current {
+    padding: 2px 5px 2px 5px;
+    margin: 2px;
+    border: 1px solid #000099;
+    font-weight: bold;
+    background-color: #000099;
+    color: #FFF;
+}
+.pagination span.disabled {
+    padding: 2px 5px 2px 5px;
+    margin: 2px;
+    border: 1px solid #eee;
+    color: #ddd;
+}
 
 /* CLIPPINGS */
 .clippings_grid {

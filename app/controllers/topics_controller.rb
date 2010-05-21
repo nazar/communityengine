@@ -117,6 +117,6 @@ class TopicsController < BaseController
 
     #overide in your app
     def authorized?
-      %w(new create).include?(action_name) || @topic.editable_by?(current_user)
+      %w(new create).include?(action_name) || Topic.find(params[:id]).editable_by?(current_user)
     end
 end
