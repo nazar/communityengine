@@ -18,17 +18,25 @@ module PaginatingFind
       else
         extract_options_from_args!(args)
       end
-
+      #
       page_options = options.delete(:page) || (args.delete(:page) ? 1 : nil)
       if page_options
-        #paginating_find expected :page to be a hash... will_paginate expects page to be an integer
+        #paginating_find expected :page to be a hash... will_paginate expects :page to be an integer
+        options[:per_page] = page_options[:size] || per_page
         if page_options.is_a? Hash
-          page_options = {:page => page_options[:current], :per_page => page_options[:size] || per_page}
+          options[:page] =  page_options[:current]
         else
-          page_options = {:page => page_options.to_i}
+          options[:page] = page_options.to_i
         end
-        #pass onto will_paginate
-        paginate(*(args << page_options))
+        cached_scoped_methods = self.current_scoped_methods
+        if cached_scoped_methods
+          self.with_scope(cached_scoped_methods) do
+            paginate(*(args << options))
+          end
+        else
+          #pass onto will_paginate
+          paginate(*(args << options))
+        end  
       else
         # The :page option was not specified, so invoke the
         # usual AR::Base#find method
